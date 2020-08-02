@@ -1,0 +1,45 @@
+﻿@page "/weather"
+
+@using Weather_Blazor.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>Weather stats for the day</p>
+
+@if (forecast == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Current Temperature</th>
+                <th>Feels Like </th>
+                <th>Min Temperature </th>
+                <th>Max Temperature</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@forecast.temp.ToString()</td>
+                <td>@forecast.feels_like.ToString()</td>
+                <td>@forecast.temp_min.ToString()</td>
+                <td>@forecast.temp_max.ToString()</td>
+
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast forecast;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ApiHelper.InitialiseClient();
+        forecast = await WeatherForecastService.LoadWeatherForecast();
+    }
+}

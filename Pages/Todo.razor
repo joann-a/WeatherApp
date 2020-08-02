@@ -1,0 +1,35 @@
+﻿@page "/Todo List"
+    <h3>Todo List </h3>
+    <p>Remaining needed to get done: (@todos.Count(Todo => !Todo.IsDone)) </p>
+<div class="item-description">
+    <input placeholder="What I need to get done" @bind="newTodo"/>
+    <label for="time"> at: </label>
+    <input type="time" placeholder="Type in the time" id="time"/>
+    <button @onclick="AddTodo">Add the task </button>
+</div>
+
+<ul class="todolist">
+    @foreach( var todo in todos)
+    {
+    <li>
+        <input type="checkbox" @bind="todo.IsDone" />
+        <input @bind="todo.Title" />
+    </li>
+    }
+</ul>
+
+@code {
+    //creating a list of Todo's so we can use the foreach loop
+    private IList<TodoItem> todos = new List<TodoItem>();
+    private string newTodo;
+
+    private void AddTodo()
+    {
+        // the todo item is binded to the input 
+        if (!string.IsNullOrWhiteSpace(newTodo))
+        {
+            todos.Add(new TodoItem { Title = newTodo});
+            newTodo = string.Empty;
+        }
+    }
+}
